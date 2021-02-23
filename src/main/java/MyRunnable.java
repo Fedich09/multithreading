@@ -11,8 +11,8 @@ public class MyRunnable implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < LIMIT; i++) {
-            counter.incAndGet();
+        while (counter.get() < LIMIT) {
+            counter.increment();
             logger.info(Thread.currentThread().getName() + " value = " + counter.get());
         }
     }

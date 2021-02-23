@@ -5,8 +5,7 @@ public class Counter {
         return value;
     }
 
-    public int incAndGet() {
-        this.value++;
-        return this.value;
+    public int increment() {
+        return ++value;
     }
 }
