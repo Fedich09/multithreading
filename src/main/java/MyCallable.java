@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class MyCallable implements Callable<Integer> {
-    List<Integer> inputList;
+    private final List<Integer> inputList;
 
     public MyCallable(List<Integer> inputList) {
         this.inputList = inputList;

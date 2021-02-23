@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
 public class MyRecursiveTask extends RecursiveTask<Integer> {
-    List<Integer> inputList;
+    private final List<Integer> inputList;
 
     public MyRecursiveTask(List<Integer> inputList) {
         this.inputList = inputList;
