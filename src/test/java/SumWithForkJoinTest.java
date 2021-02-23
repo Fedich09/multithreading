@@ -9,7 +9,7 @@ class SumWithForkJoinTest {
 
     @BeforeAll
     static void beforeAll() {
-        sumWithForkJoin = new SumWithForkJoin();
+        sumWithForkJoin = new SumWithForkJoin(Util.generateElements());
         expected = Util.generateElements().stream().reduce(Integer::sum).get();
     }
 

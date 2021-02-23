@@ -1,21 +1,37 @@
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
-import java.util.stream.Collectors;
-import org.apache.commons.collections4.ListUtils;
 
 public class SumWithForkJoin extends RecursiveTask<Integer> {
-    private static final int THREADS = 10;
+    private static final int THRESHOLD = 50_000;
+    private List<Integer> list;
+
+    public SumWithForkJoin(List<Integer> list) {
+        this.list = list;
+    }
 
     @Override
-    public Integer compute() {
-        List<Integer> integers = Util.generateElements();
-        List<List<Integer>> lists = ListUtils.partition(integers, integers.size() / THREADS);
-        List<MyRecursiveTask> collect = lists.stream()
-                .map(MyRecursiveTask::new)
-                .collect(Collectors.toList());
-        Collection<MyRecursiveTask> myRecursiveTasks = ForkJoinTask.invokeAll(collect);
-        return myRecursiveTasks.stream().map(MyRecursiveTask::compute).reduce(Integer::sum).get();
+    protected Integer compute() {
+        if (list.size() > THRESHOLD) {
+            return ForkJoinTask.invokeAll(createSubtasks())
+                    .stream()
+                    .mapToInt(ForkJoinTask::join)
+                    .sum();
+        } else {
+            return processing(list);
+        }
+    }
+
+    private Collection<SumWithForkJoin> createSubtasks() {
+        List<SumWithForkJoin> dividedTasks = new ArrayList<>();
+        dividedTasks.add(new SumWithForkJoin(list.subList(0, list.size() / 2)));
+        dividedTasks.add(new SumWithForkJoin(list.subList(list.size() / 2, list.size())));
+        return dividedTasks;
+    }
+
+    private Integer processing(List<Integer> list) {
+        return list.stream().reduce(Integer::sum).get();
     }
 }
