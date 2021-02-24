@@ -10,7 +10,7 @@ public class Main {
 
         SumListWithExecutorService service = new SumListWithExecutorService();
         System.out.println(service.execute());
-        SumWithForkJoin sumWithForkJoin = new SumWithForkJoin(Util.generateElements());
+        SumWithForkJoin sumWithForkJoin = new SumWithForkJoin(ListSupplier.generateElements());
         System.out.println(sumWithForkJoin.compute());
     }
 }

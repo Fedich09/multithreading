@@ -12,10 +12,10 @@ public class SumListWithExecutorService {
 
     public int execute() throws InterruptedException, ExecutionException {
         ExecutorService executorService = Executors.newFixedThreadPool(THREADS);
-        List<Integer> integers = Util.generateElements();
+        List<Integer> integers = ListSupplier.generateElements();
         List<List<Integer>> lists = ListUtils.partition(integers, integers.size() / THREADS);
         List<Callable<Integer>> callables = lists.stream()
-                .map(MyCallable::new)
+                .map(ListSumCalculator::new)
                 .collect(Collectors.toList());
         List<Future<Integer>> futures = executorService.invokeAll(callables);
         executorService.shutdown();

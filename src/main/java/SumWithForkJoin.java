@@ -19,9 +19,8 @@ public class SumWithForkJoin extends RecursiveTask<Integer> {
                     .stream()
                     .mapToInt(ForkJoinTask::join)
                     .sum();
-        } else {
-            return processing(list);
         }
+        return processing(list);
     }
 
     private Collection<SumWithForkJoin> createSubtasks() {
